@@ -7,7 +7,6 @@
 
 import random
 
-from scrapy.http import HtmlResponse
 from selenium.webdriver import Chrome
 
 
