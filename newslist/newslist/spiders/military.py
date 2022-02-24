@@ -1,3 +1,4 @@
+from newslist.items import NewslistItem
 from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst, Join, Compose
@@ -8,25 +9,23 @@ class MilitarySpider(CrawlSpider):
     name = 'military'
     allowed_domains = ['china.com']
     start_urls = ['http://military.china.com/']
-    count = 0
-    urls = []
-    url_set = []
 
     rules = (
-        # Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse_item', follow=True),
-        Rule(LinkExtractor(restrict_css='body'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_css='ul.top_header_channel li')),
     )
 
-    def __del__(self):
-        print(self.urls)
-        print(self.count)
-        print(len(self.url_set))
-
-    def parse_item(self, response):
-        self.count += 1
-        self.urls.append(response.url)
-        self.url_set.append(response.url)
-        print(self.count, "=======> ", response.url)
+    @staticmethod
+    def parse_item(response):
+        loader = NewsLoader(item=NewslistItem(), response=response)
+        loader.add_css('title', 'h1.article_title::text')
+        loader.add_value('url', response.url)
+        loader.add_css('text', '.article_content p::text')
+        loader.add_css('datetime', '.article_info .time::text', re='(\d+-\d+-\d+\s\d+:\d+:\d+)')
+        loader.add_css('source', '.article_info .source::text', re='来源：(.*)')
+        loader.load_item()
+        loader.add_value('website', '中华网')
+        yield loader.load_item()
 
 
 class NewsLoader(ItemLoader):
