@@ -14,7 +14,7 @@ class MilitarySpider(CrawlSpider):
 
     rules = (
         # Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse_item', follow=True),
-        Rule(LinkExtractor(restrict_css='ul.top_header_channel li'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(restrict_css='body'), callback='parse_item', follow=False),
     )
 
     def __del__(self):
