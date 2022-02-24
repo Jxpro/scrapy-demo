@@ -1,7 +1,7 @@
 from newslist.items import NewslistItem
+from newslist.loaders import NewsLoader
+
 from scrapy.linkextractors import LinkExtractor
-from scrapy.loader import ItemLoader
-from scrapy.loader.processors import TakeFirst, Join, Compose
 from scrapy.spiders import CrawlSpider, Rule
 
 
@@ -26,9 +26,3 @@ class MilitarySpider(CrawlSpider):
         loader.load_item()
         loader.add_value('website', '中华网')
         yield loader.load_item()
-
-
-class NewsLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-    text_out = Compose(Join(), lambda s: s.strip())
-    source_out = Compose(Join(), lambda s: s.strip())

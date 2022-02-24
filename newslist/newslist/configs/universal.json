@@ -1,0 +1,68 @@
+{
+  "spider": "universal",
+  "website": "中华网科技",
+  "settings": {
+    "USER_AGENT": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
+  },
+  "start_urls": ["http://military.china.com/"],
+  "allowed_domains": [
+    "china.com"
+  ],
+  "rules": "universal",
+  "item": {
+    "class": "NewslistItem",
+    "loader": "NewsLoader",
+    "attrs": {
+      "title": [
+        {
+          "method": "css",
+          "args": [
+            "h1.article_title::text"
+          ]
+        }
+      ],
+      "url": [
+        {
+          "method": "attr",
+          "args": [
+            "url"
+          ]
+        }
+      ],
+      "text": [
+        {
+          "method": "css",
+          "args": [
+            ".article_content p::text"
+          ]
+        }
+      ],
+      "datetime": [
+        {
+          "method": "css",
+          "args": [
+            ".article_info .time::text"
+          ],
+          "re": "(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+)"
+        }
+      ],
+      "source": [
+        {
+          "method": "css",
+          "args": [
+            ".article_info .source::text"
+          ],
+          "re": "来源：(.*)"
+        }
+      ],
+      "website": [
+        {
+          "method": "value",
+          "args": [
+            "中华网"
+          ]
+        }
+      ]
+    }
+  }
+}
