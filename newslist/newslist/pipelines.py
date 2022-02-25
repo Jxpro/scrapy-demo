@@ -5,6 +5,8 @@
 
 
 # useful for handling different item types with a single interface
+import time
+
 import pymongo
 from scrapy.exceptions import DropItem
 
@@ -39,7 +41,8 @@ class MongoPipeline:
     def close_spider(self, spider):
         # print(self.collections)
         for collection in self.collections:
-            self.db['china_' + collection].insert_many(self.collections[collection])
+            prefix = time.strftime("%Y_%m_%d_%H_%M_%S_", time.gmtime())
+            self.db[prefix + collection].insert_many(self.collections[collection])
         self.client.close()
 
 
@@ -48,6 +51,4 @@ class FilterPipeline:
     def process_item(item, spider):
         if len(dict(item)) != 7:
             raise DropItem('Missing filed')
-        if item['source'] == '':
-            raise DropItem('source is a null string')
         return item
