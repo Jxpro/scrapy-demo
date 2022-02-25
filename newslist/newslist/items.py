@@ -10,7 +10,6 @@ from scrapy import Field
 class NewslistItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    collection = 'news'
 
     title = Field()
     text = Field()
@@ -18,3 +17,12 @@ class NewslistItem(scrapy.Item):
     source = Field()
     url = Field()
     website = Field()
+    collection = Field()
+
+
+class CollectionItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+
+    collection = Field()
+    data = Field()

@@ -15,6 +15,7 @@ class MongoPipeline:
         self.mongo_db = mongo_db
         self.client = None
         self.db = None
+        self.collections = {}
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -28,18 +29,24 @@ class MongoPipeline:
         self.db = self.client[self.mongo_db]
 
     def process_item(self, item, spider):
-        name = item.collection
-        self.db[name].insert_one(dict(item))
+        collection = item.pop('collection')
+        data = dict(item)
+        if not (datalist := self.collections.get(collection, [])):
+            self.collections.update({collection: datalist})
+        datalist.append(data)
         return item
 
     def close_spider(self, spider):
+        # print(self.collections)
+        for collection in self.collections:
+            self.db['china_' + collection].insert_many(self.collections[collection])
         self.client.close()
 
 
 class FilterPipeline:
     @staticmethod
     def process_item(item, spider):
-        if len(dict(item)) != 6:
+        if len(dict(item)) != 7:
             raise DropItem('Missing filed')
         if item['source'] == '':
             raise DropItem('source is a null string')

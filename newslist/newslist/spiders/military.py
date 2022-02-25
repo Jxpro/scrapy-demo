@@ -1,6 +1,7 @@
+import re
+
 from newslist.items import NewslistItem
 from newslist.loaders import NewsLoader
-
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
@@ -23,6 +24,6 @@ class MilitarySpider(CrawlSpider):
         loader.add_css('text', '.article_content p::text')
         loader.add_css('datetime', '.article_info .time::text', re='(\d+-\d+-\d+\s\d+:\d+:\d+)')
         loader.add_css('source', '.article_info .source::text', re='来源：(.*)')
-        loader.load_item()
         loader.add_value('website', '中华网')
+        loader.add_value('collection', re.search(r'//(.*?).china', response.url).group(1))
         yield loader.load_item()
