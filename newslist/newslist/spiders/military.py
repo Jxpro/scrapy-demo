@@ -13,6 +13,14 @@ class MilitarySpider(CrawlSpider):
 
     rules = (
         Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse_item', follow=True),
+        # news yz edu
+        Rule(LinkExtractor(restrict_css='#js-info-flow .lists_start .listItem'), callback='parse_item', follow=True),
+        # military
+        Rule(LinkExtractor(restrict_css='#js-newsTab .newsTab-list .listItem'), callback='parse_item', follow=True),
+        # finance ent
+        Rule(LinkExtractor(restrict_css='#newsTab .news-tab-cnt .item-phototext'), callback='parse_item', follow=True),
+        # game
+        Rule(LinkExtractor(restrict_css='#js-main .newsDefList .listItem'), callback='parse_item', follow=True),  # law
         Rule(LinkExtractor(restrict_css='ul.top_header_channel li')),
     )
 
