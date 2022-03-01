@@ -13,6 +13,7 @@ class TextPipeline:
     def __init__(self):
         self.limit = 50
 
+    # 可直接返回dict
     def process_item(self, item, spider):
         if text := item['text']:
             if len(text) > self.limit:
