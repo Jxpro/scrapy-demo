@@ -12,11 +12,11 @@ class MilitarySpider(CrawlSpider):
     start_urls = ['http://military.china.com/']
 
     rules = (
-        Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_css='#js-info-flow .item_list li'), callback='parse', follow=True),
         # news yz edu
-        Rule(LinkExtractor(restrict_css='#js-info-flow .lists_start .listItem'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_css='#js-info-flow .lists_start .listItem'), callback='parse', follow=True),
         # # military
-        Rule(LinkExtractor(restrict_css='#js-newsTab .newsTab-list .listItem'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_css='#js-newsTab .newsTab-list .listItem'), callback='parse', follow=True),
         # # finance ent
         # 下面这两条rule的测试重复又复杂，暂时不测了
         # Rule(LinkExtractor(restrict_css='#newsTab .news-tab-cnt .item-phototext'), callback='parse_item', follow=True),
@@ -25,7 +25,7 @@ class MilitarySpider(CrawlSpider):
         Rule(LinkExtractor(restrict_css='ul.top_header_channel li')),
     )
 
-    def parse_item(self, response):
+    def parse(self, response, **kwargs):
         collection = re.search(r'//(.*?).china', response.url).group(1)
         loader = NewsLoader(item=NewslistItem(), response=response)
         loader.add_value('url', response.url)
