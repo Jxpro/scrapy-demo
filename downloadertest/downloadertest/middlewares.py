@@ -7,8 +7,6 @@
 
 import random
 
-from selenium.webdriver import Chrome
-
 
 class RandomUserAgentMiddleware:
     def __init__(self):
@@ -38,25 +36,25 @@ class RandomUserAgentMiddleware:
 class DownloadMiddlewareOne:
     @staticmethod
     def process_request(request, spider):
-        spider.logger.debug('middleware handle request part one')
+        spider.logger.debug(f'middleware handle request<{request.url}> part one')
         # return scrapy.http.Response(url=request.url, body=b'a')
         # if request.url == 'http://httpbin.org/robots.txt':
         #     raise IgnoreRequest('ignore')
 
     @staticmethod
     def process_response(request, response, spider):
-        spider.logger.debug('middleware handle response part one')
+        spider.logger.debug(f'middleware handle response<{response.url}> part one')
         return response
 
 
 class DownloadMiddlewareTwo:
     @staticmethod
     def process_request(request, spider):
-        spider.logger.debug('middleware handle request part two')
+        spider.logger.debug(f'middleware handle request<{request.url}> part two')
 
     @staticmethod
     def process_response(request, response, spider):
-        spider.logger.debug('middleware handle response part two')
+        spider.logger.debug(f'middleware handle response<{response.url}> part two')
         # if request.url == 'http://httpbin.org/robots.txt':
         #     raise IgnoreRequest('ignore')
         return response
